@@ -55,4 +55,30 @@ ggplot(data = results, aes(x = received_callback, y = Freq, fill = job_city)) +
 
 prop.test(c(210, 182), n = c(210+1956, 182+2522))
 
-                            
+#MODULE 1.2 
+library(mosaic)
+library(mosaicData)
+View(CPS85)
+women85=filter(CPS85, sex=="F")
+w1=favstats(wage~married, data=women85)
+w1 
+
+w1$mean[1] 
+bwplot(wage~married, data=women85)
+#Using the t-test function
+t.test(wage ~ married, data = women85)
+
+#MODULE 1.3 
+cellphone<- read.csv("https://raw.githubusercontent.com/jenbroatch/STP281/master/cellphonereaction.csv")
+View(cellphone)
+cellphone <- cellphone %>%
+  mutate(
+    diff = Cell.Phone-No.cell.phone
+  )
+View(cellphone)
+hist(cellphone$diff, xlab='Difference in reaction times: Cell-no cell', main='Histogram')
+favstats(~diff, data=cellphone)
+t.test(~diff, data=cellphone)   
+
+#Alternative syntax that does not require calculation of differences
+t.test(cellphone$Cell.Phone,cellphone$No.cell.phone, paired=T )  

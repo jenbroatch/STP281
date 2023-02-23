@@ -11,33 +11,44 @@ reg1=lm(gestation$Longevity~gestation$Gestational.Period )
 plot(gestation$Gestational.Period, gestation$Longevity, xlab="Gestational Period (days)", ylab="Longevity (years)")
 abline(reg1)
 summary(reg1)
+confint(reg1,level=0.95)
+
+library(ggplot2)
+library(dplyr)
+p1 <- gestation %>% 
+  ggplot(aes(x = Gestational.Period, y = Longevity)) +
+  geom_point(colour = "black") +
+  geom_smooth(method = "lm", se = TRUE) +
+  labs(title = "95% Confidence Interval") +
+  theme_bw() +
+  theme(plot.title = element_text(face = "bold",hjust = 0.5))
+
+p1
+
+ci95 <- predict(reg1, gestation, interval = "confidence", level = 0.95)
+View(ci95)
+# this does not have the original x values only predicted y and CI
 
 
+#Add the rest of the gestation data to interval estimates
+final_data <- bind_cols(gestation, ci95)
+View(final_data)
+
+#Note that our data set does not have gestation period=100
+#So weird... I needed to run the model again without the $
+reg1=lm(Longevity~Gestational.Period, data=gestation )
+gestation.new<-data.frame( Gestational.Period=c(100))
+
+predict(reg1, gestation.new, interval = "confidence")
+predict(reg1, gestation.new, interval = "prediction")
+
+temp_var <- predict(reg1, interval="prediction")
 
 
-lion=read.csv(url("http://www.zoology.ubc.ca/~schluter/WhitlockSchluter/wp-content/data/chapter17/chap17e1LionNoses.csv"))
-head(lion)
-View(lion)
-plot(lion$proportionBlack,lion$ageInYears)
+new_df <- cbind(gestation, temp_var)
 
-
-
-library(tidyverse)
-wine_ratings <- read.csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-05-28/winemag-data-130k-v2.csv") 
-View(wine_ratings)
-
-wine_ratings <- wine_ratings %>% 
-  select(-X) %>%
-  extract(title, "year", "(20\\d\\d)", convert = TRUE, remove = FALSE) %>%
-  mutate(year = ifelse(year < 1900, NA, year)) %>%
-  filter(!is.na(price))
-
-mod1=lm(points ~ log(price), data=wine_ratings)
-summary(mod1)
-
-
-
-
-
-
-
+ggplot(new_df, aes(Gestational.Period, Longevity))+
+  geom_point() +
+  geom_line(aes(y=lwr), color = "red", linetype = "dashed")+
+  geom_line(aes(y=upr), color = "red", linetype = "dashed")+
+  geom_smooth(method=lm, se=TRUE)

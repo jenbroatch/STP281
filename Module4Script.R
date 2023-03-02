@@ -35,6 +35,7 @@ library(car)
 threshold  <- 4/((nrow(gestation)-length(reg1$coefficients)-2))
 plot(reg1, which=4, cook.levels=threshold)
 
+
 #create Q-Q plot for residuals
 qqnorm(res)
 #add a straight diagonal line to the plot
@@ -43,3 +44,27 @@ qqline(res)
 
 qqPlot(reg1,labels=row.names(gestation$Animal), id.method="identify",
        simulate=TRUE, main="Q-Q Plot")
+
+#Module 4.2
+library(openintro)
+library(dplyr)
+library(ggplot2)
+library(e1071)
+View(mammals)
+plot(mammals$body_wt, mammals$brain_wt, xlab="body weight", ylab="brain weight")
+
+#Investigate a transformation on y
+
+hist(mammals$brain_wt, xlab="Brain Weight (kg)", main="Histogram")
+hist(log(mammals$brain_wt), xlab="ln(Brain Weight (kg))", main="Histogram")
+plot(mammals$body_wt, log(mammals$brain_wt), xlab="body weight", ylab="ln(brain weight)")
+
+#Investigate a transformation on x
+hist(mammals$body_wt, xlab="Body Weight (kg)", main="Histogram")
+hist(log(mammals$body_wt), xlab="ln(Body Weight (kg))", main="Histogram")
+plot(mammals$body_wt, log(mammals$brain_wt), xlab="body weight", ylab="ln(brain weight)")
+
+plot(log(mammals$body_wt), log(mammals$brain_wt), xlab="ln(body weight)", ylab="ln(brain weight)")
+
+lm()
+help(mammals)

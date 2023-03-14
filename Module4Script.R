@@ -66,5 +66,29 @@ plot(mammals$body_wt, log(mammals$brain_wt), xlab="body weight", ylab="ln(brain 
 
 plot(log(mammals$body_wt), log(mammals$brain_wt), xlab="ln(body weight)", ylab="ln(brain weight)")
 
-lm()
-help(mammals)
+
+#Module 4.3
+oring =read.csv("https://raw.githubusercontent.com/jenbroatch/STP281/master/orings.csv") 
+View(oring)
+library(dplyr)
+oring <- oring %>%
+  mutate(failure =ifelse(damaged > 0, 1, 0))
+View(oring)
+
+plot(oring$temperature, oring$failure, xlab="Temperature at Launch", ylab="At least one oring failure"
+     )
+
+mylogit <- glm(failure ~ temperature, data = oring, family = "binomial")
+summary(mylogit)
+exp(cbind(OR = coef(mylogit), confint(mylogit)))
+
+#define new data frame that contains predictor variable
+newdata <- data.frame(temperature=seq(min(oring$temperature), max(oring$temperature),len=500))
+
+#use fitted model to predict values of failure
+newdata$failure = predict(mylogit, newdata, type="response")
+
+#plot logistic regression curve
+plot(failure ~ temperature, data = oring, col="steelblue")
+lines(failure ~ temperature, newdata, lwd=2)
+

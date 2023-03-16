@@ -92,3 +92,8 @@ newdata$failure = predict(mylogit, newdata, type="response")
 plot(failure ~ temperature, data = oring, col="steelblue")
 lines(failure ~ temperature, newdata, lwd=2)
 
+
+#use fitted model to predict values of failure with one value
+newdata1=data.frame(temperature=c(31))
+newdata1$failure = predict(mylogit, newdata1, type="response")
+newdata1$failure

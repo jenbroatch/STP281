@@ -94,3 +94,10 @@ counts <- summary_data$counts
 n <- summary_data$n
 
 
+#Intro to R - Reading in Data
+flint<-read.csv("https://raw.githubusercontent.com/jenbroatch/STP281/refs/heads/main/DataSets/Flint.csv") 
+
+
+str(flint)
+head(flint)
+View(flint)

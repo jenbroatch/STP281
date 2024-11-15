@@ -47,14 +47,8 @@ Teststat
 Teststat^2
 
 #Module 1.5- Two Sample Proportions
-resumedata<- read.csv("https://raw.githubusercontent.com/jenbroatch/STP281/refs/heads/main/DataSets/resume.csv")
-View(resumedata)
 
-
-#Filter the dataset to include only the desired variables for example
-resume<-resumedata %>% select('race','received_callback')
-results <- data.frame(table(resume))
-results 
+#The counts used in lecture are from the summarized data.  
 
 # Vector of counts meeting the condition for each group
 counts <- c(246, 164)
@@ -73,4 +67,30 @@ unname(sqrt(testResult$statistic))
 testResult$p.value
 
 testResult 
+
+
+#If you wanted to get the counts and sample size (n) from raw data
+#DISCLAIMER- the summarized data set above includes 20 observations that were not included in the larger data set 
+
+resumedata<- read.csv("https://raw.githubusercontent.com/jenbroatch/STP281/refs/heads/main/DataSets/resume.csv")
+View(resumedata)
+
+
+#Filter the dataset to include only the desired variables for example
+resume<-resumedata %>% select('race','received_callback')
+results <- data.frame(table(resume))
+results 
+
+#Get counts extracted from the table
+summary_data <- resume %>%
+  group_by(race) %>%
+  summarize(
+    counts = sum(received_callback == 1),
+    n = n()
+  )
+
+# Extract the vectors for successes and sample sizes
+counts <- summary_data$counts
+n <- summary_data$n
+
 

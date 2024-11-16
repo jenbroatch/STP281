@@ -4,6 +4,7 @@
 library(tidyverse)
 library(dplyr)
 library(ggplot2)
+library(binom)
 
 #Module 1.1: One Sample Confidence intervals for Proportion
 binom.confint(142, n = 1432)

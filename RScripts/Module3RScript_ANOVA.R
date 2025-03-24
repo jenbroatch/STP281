@@ -3,6 +3,7 @@
 
 
 library(dplyr)
+library(tidyr)
 
 # For an F-distribution, if the degrees of freedom between samples is 2
 # and the degrees of freedom within samples is 5, what is P(F < 2)?
